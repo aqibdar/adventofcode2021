@@ -20,12 +20,23 @@ public class Day3 {
 	/**
 	 * @param args
 	 */
+	
+	private List<String> list_starts_with_zero = new ArrayList<String>();
+	private List<String> list_starts_with_ones = new ArrayList<String>();
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		List<String> list = readFile("day3input.txt");
 		System.out.print(list.size());
-		solutionPart1(list);
+		String oxygen_generater_rating = processBinaryForPart2(list,true);
+		String co2_generater_rating = processBinaryForPart2(list,false);
 		
+		int oxygen_generater_rating_int =Integer.parseInt(oxygen_generater_rating,2);
+		int  co2_generater_rating_int=Integer.parseInt(co2_generater_rating,2);
+		
+		int sum = oxygen_generater_rating_int*co2_generater_rating_int;
+		
+		System.out.println("ANSWER IS ::"+sum);
 	}
 	
 
@@ -60,6 +71,55 @@ public class Day3 {
 		
 		System.out.println("ANSWER IS ::"+sum);
 	}
+	private static void solutionPart2Day3(List<String> pList) {
+		
+	}
+	private static String processBinaryForPart2(List<String> pList, boolean pHiFrquency) {
+		List<String> final_list = new ArrayList<String>();
+		final_list=pList;
+		int number_length = pList.get(0).toCharArray().length;
+		for(int i=0;i<number_length;i++) {
+			if(final_list.size()==1) {
+				break;
+			}
+			final_list = getListPart2(final_list, i, pHiFrquency);
+		}
+		System.out.println(final_list.get(0));
+		return final_list.get(0);
+	}
+	
+	private static List<String> getListPart2(List<String> pList, int pIndex, boolean pHighFrquencyList){
+		List<String> binary_zeros_list = new ArrayList<String>();
+		List<String> binary_ones_list = new ArrayList<String>();
+		for(String cord: pList) {
+			char[] charArray = cord.toCharArray();
+			int val = Character.getNumericValue(charArray[pIndex]);
+			if(val==0) {
+				binary_zeros_list.add(cord);
+			}else {
+				binary_ones_list.add(cord);
+			}
+		}
+		if(pHighFrquencyList) {
+			if(binary_zeros_list.size()>binary_ones_list.size()) {
+				return binary_zeros_list;
+			}else if(binary_zeros_list.size()==binary_ones_list.size()){
+				return binary_ones_list;
+			}else {
+				return binary_ones_list;
+			}
+		}else {
+			if(binary_zeros_list.size()<binary_ones_list.size()) {
+				return binary_zeros_list;
+			}else if(binary_zeros_list.size()==binary_ones_list.size()){
+				return binary_zeros_list;
+			}else {
+				return binary_ones_list;
+			}
+		}
+		
+	}
+	
 	private static int processBinary(List<String> pList, int pIndex) {
 		int count_zeros = 0;
 		for(String cord: pList) {
